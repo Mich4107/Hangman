@@ -135,7 +135,6 @@ public class Main {
 
         while(scanner.hasNextLine()){
             String word = scanner.nextLine();
-
             vocabulary.add(word);
         }
         return vocabulary;
