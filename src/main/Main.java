@@ -54,38 +54,53 @@ public class Main {
 
             char character = c.charAt(0);
 
+
+            //флажок для проверки есть буква в слове или нет
             boolean charInWord = false;
 
-            for(int i = 0; i < word.length(); i++) {
-                //если символ находится в слове И этот символ ещё не был выявлен в загаданном слове
-                if(character == word.charAt(i) && hiddenWordAsChars[i] != character ) {
-                    hiddenWordAsChars[i] = character;
-                    correctLetters++;
-                    charInWord=true;
-                }
-            }
-            //если символа нет в массиве использованных символов, то заходим в if и выполняем логику
-            //если символ уже есть в массиве, то проверка для него уже была сделана
-            if(!usedLetters.contains(character)) {
-                //добавляем символ в массив использованных символов
-                usedLetters.add(character);
-                //если символа в слове нет - уменьшается количество шансов на ошибку
-                if(charInWord != true){
-                    mistakesLeft--;
-                    Gallows.printGallows(mistakesLeft);
-                    System.out.println("Такой буквы нет");
-                    System.out.println("Осталось попыток: "+mistakesLeft);
-                }
-                System.out.println();
+            if(isValidLetter(character)){
 
+                for(int i = 0; i < word.length(); i++) {
+
+                    //если буква находится в слове И эта буква ещё не был выявлена в загаданном слове
+                    if(character == word.charAt(i) && hiddenWordAsChars[i] != character ) {
+                        hiddenWordAsChars[i] = character;
+                        correctLetters++;
+                        charInWord=true;
+                    }
+                }
+                //если буквы нет в массиве использованных букв, то заходим в if и проверяем есть ли буква в слове или нет
+                //если буква уже есть в массиве, то проверка для нее уже была сделана -> переходим в блок else
+                if(!usedLetters.contains(character)) {
+
+                    //добавляем букву в массив использованных символов
+                    usedLetters.add(character);
+
+                    //если буквы в слове нет - уменьшается количество шансов на ошибку
+                    if(charInWord != true){
+                        mistakesLeft--;
+                        Gallows.printGallows(mistakesLeft);
+                        System.out.println("Такой буквы нет");
+                        System.out.println("Осталось попыток: "+mistakesLeft);
+                    }
+                    System.out.println();
+
+                } else {
+                    System.out.println();
+                    System.out.println("!!!!!!!! Вы уже вводили эту букву !!!!!!!!");
+                    System.out.println();
+
+                }
             } else {
                 System.out.println();
-                System.out.println("!!!!!!!! Вы уже вводили этот символ !!!!!!!!");
+                System.out.println("Эта буква не входит в промежуток букв русского алфавита а-я");
                 System.out.println();
-
             }
+
+
         }
         System.out.println();
+
         //если шансы на ошибки закончились - проигрыш
         if(mistakesLeft==0){
             System.out.println("!!!!! Вы проиграли !!!!!!");
@@ -138,5 +153,13 @@ public class Main {
             vocabulary.add(word);
         }
         return vocabulary;
+    }
+
+    /**
+     * Checks for a valid letter
+     * @return  is valid or no
+     */
+    private static boolean isValidLetter(Character character){
+        return (character >= 'а') && (character <= 'я');
     }
 }
